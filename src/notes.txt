@@ -1,0 +1,13 @@
+from BattleTankProblem import *
+from BattleTankUI import *
+initial = np.asarray([9,1])
+problem = BattleTank(initial)
+func = exp_schedule()
+solution = simulated_annealing_full(problem, func)
+problem.experiments(100, 20, 0.005, 100)
+gameUI = BattleTankUI(problem.rows_number, problem.columns_number, problem.game_grid)
+gameUI.deiconify()
+
+
+conda install ipykernel
+python -m ipykernel install --user --name python3 --display-name "Python 3"
