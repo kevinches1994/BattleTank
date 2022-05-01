@@ -684,7 +684,7 @@ def simulated_annealing_full(problem, schedule=exp_schedule()):
             return states
         neighbors = current.expand(problem)
         if not neighbors:
-            return current.state
+            return states
         next_choice = random.choice(neighbors)
         delta_e = problem.value(next_choice.state) - problem.value(current.state)
         if delta_e > 0 or probability(np.exp(delta_e / T)):
