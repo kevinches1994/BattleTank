@@ -15,8 +15,6 @@ class BattleTankUI(tkinter.Tk):
 
         self.rows_number = rows_number
 
-        self.game_grid = game_grid
-
         self.mainFrame = tkinter.Frame(self)
 
         self.minsize(450,450)
@@ -29,7 +27,7 @@ class BattleTankUI(tkinter.Tk):
 
         # llama a la funcion que crea los botones
 
-        self.create_logical_button_grid()
+        self.create_logical_button_grid(game_grid)
         
         menubar = tkinter.Menu(self)
 
@@ -38,23 +36,29 @@ class BattleTankUI(tkinter.Tk):
         
         self.config(menu=menubar)
 
+        gameAlgorithmsMenu = tkinter.Menu(menubar)
+        gameAlgorithmsMenu.add_command(label="Usando simulated annealing", command = self.__play_with_simulated_annealing)
+        menubar.add_cascade(label="Jugar", menu=gameAlgorithmsMenu)
+
         self.withdraw()
+
+    def __play_with_simulated_annealing(self):
+        print("Playing with using simulated annealing")
 
     def set_controller(self, controller):
         self.controller = controller
 
     def __restart(self):
         self.controller.restart()
-        self.game_grid = self.controller.get_game_grid()
-        self.create_logical_button_grid()
+        self.create_logical_button_grid(self.controller.get_game_grid())
 
-    def create_logical_button_grid(self):
+    def create_logical_button_grid(self, game_grid):
         self.game_ui_grid = []
         for row_index in range(self.cols_number):
             row_label = []
             for col_index in range(self.cols_number):
                 lbl = Label(self.mainFrame, borderwidth=0)
-                self.put_image_label(lbl, self.game_grid, row_index, col_index)
+                self.put_image_label(lbl, game_grid, row_index, col_index)
                 row_label.append(lbl)
                 lbl.grid(row = row_index, column = col_index)
             self.game_ui_grid.append(row_label)

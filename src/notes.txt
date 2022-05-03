@@ -15,6 +15,7 @@ initial = np.asarray([9,1])
 problem = BattleTank(initial)
 gameUI = BattleTankUI(problem.rows_number, problem.columns_number, problem.game_grid)
 controller = BattleTankController(problem, gameUI)
+gameUI.set_controller(controller)
 controller.show()
 
 
