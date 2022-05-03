@@ -52,27 +52,29 @@ class BattleTankUI(tkinter.Tk):
                                      command = self.say_hi)
                 """
                 lbl = Label(self.mainFrame, borderwidth=0)
-                self.put_image_label(lbl, row_index, col_index)
+                self.put_image_label(lbl, self.game_grid, row_index, col_index)
                 row_label.append(lbl)
                 lbl.grid(row = row_index, column = col_index)
             self.game_ui_grid.append(row_label)
 
-    def put_image_label(self, lbl, row_index, column_index):
+    def put_image_label(self, lbl, game_grid, row_index, column_index, action=None):
 
         image_path = None
         resize_tuple = (40, 40)
-        
-        if self.game_grid[row_index, column_index] == 0:
+
+        if game_grid[row_index, column_index] == 0:
             image_path = 'images/queen.bmp'
-        elif self.game_grid[row_index, column_index] == 1:
+        elif game_grid[row_index, column_index] == 1:
             image_path = 'images/player_right.bmp'
-        elif self.game_grid[row_index, column_index] == 2:
-            image_path = 'images/enemy_left.bmp'
-        elif self.game_grid[row_index, column_index] == 3:
+        elif game_grid[row_index, column_index] == 2:
+            if action is None:
+                action = 'LEFT'
+            image_path = 'images/enemy_{}.bmp'.format(action.lower())
+        elif game_grid[row_index, column_index] == 3:
             image_path = 'images/wall.bmp'
-        elif self.game_grid[row_index, column_index] == 4:
+        elif game_grid[row_index, column_index] == 4:
             image_path = 'images/brick.bmp'
-        else:
+        elif game_grid[row_index, column_index] == 5:
             image_path = 'images/road.bmp'
 
         assert image_path is not None

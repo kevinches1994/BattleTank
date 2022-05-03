@@ -143,6 +143,19 @@ class BattleTank(Problem):
         new_state = state + np.asarray(self.game_actions[action])
         return new_state
 
+    def update_enemy_position(self, enemy, action):
+        enemy_state = np.asarray(self.enemies_position[enemy])
+        if self.isValidMove(enemy_state, action):
+            # Perform update in the game grid
+            self.game_grid[tuple(enemy_state)] = self.game_representation['ROAD']
+            enemy_state = tuple(enemy_state + np.asarray(self.game_actions[action]))
+            self.game_grid[enemy_state] = self.game_representation['ENEMY']
+            # do update the enemy position in the dict of enemies
+            self.enemies_position[enemy] = enemy_state
+            return enemy_state
+            
+        return None
+            
     def value(self, state):
         # state is defined as the position in the grid where the player is currently positioned
         # state is implemented as a np-array of shape (1,2)
