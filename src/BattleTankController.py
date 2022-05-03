@@ -43,3 +43,9 @@ class BattleTankController():
             row_index = new_enemy_position[0]
             col_index = new_enemy_position[1]
             self.gameUI.put_image_label(self.gameUI.game_ui_grid[row_index][col_index], self.problem.game_grid, row_index, col_index, action)
+
+    def restart(self):
+        self.problem.resetGrid()
+
+    def get_game_grid(self):
+        return self.problem.game_grid

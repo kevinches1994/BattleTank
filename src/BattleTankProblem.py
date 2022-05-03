@@ -91,6 +91,11 @@ class BattleTank(Problem):
                 [self.game_representation['WALL']] * self.columns_number,
             ]
         )
+
+        self.enemies_position = {
+            'ENEMY_1': self.initial_enemy_position
+        }
+
         self.setPositions()
 
     def setPositions(self):

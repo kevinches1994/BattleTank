@@ -33,24 +33,26 @@ class BattleTankUI(tkinter.Tk):
         
         menubar = tkinter.Menu(self)
 
-        menubar.add_command(label="Salir",command = self.destroy)
-        menubar.add_command(label="Ocultar",command = self.withdraw)
-        menubar.add_command(label= "Guardar",command = self.destroy)
+        menubar.add_command(label="Salir", command = self.destroy)
+        menubar.add_command(label= "Reiniciar", command = self.__restart)
         
         self.config(menu=menubar)
 
         self.withdraw()
+
+    def set_controller(self, controller):
+        self.controller = controller
+
+    def __restart(self):
+        self.controller.restart()
+        self.game_grid = self.controller.get_game_grid()
+        self.create_logical_button_grid()
 
     def create_logical_button_grid(self):
         self.game_ui_grid = []
         for row_index in range(self.cols_number):
             row_label = []
             for col_index in range(self.cols_number):
-                """
-                btn = tkinter.Button(self.mainFrame,text="",bg="white",
-                                     width=5,height =1,fg="white",
-                                     command = self.say_hi)
-                """
                 lbl = Label(self.mainFrame, borderwidth=0)
                 self.put_image_label(lbl, self.game_grid, row_index, col_index)
                 row_label.append(lbl)
