@@ -1,5 +1,5 @@
 import tkinter
-from tkinter import Toplevel, Label, Button#, PhotoImage
+from tkinter import Label #, PhotoImage
 from PIL import ImageTk ,Image
 
 class BattleTankUI(tkinter.Tk):
@@ -59,34 +59,27 @@ class BattleTankUI(tkinter.Tk):
 
     def put_image_label(self, lbl, row_index, column_index):
 
-        image = None
+        image_path = None
         resize_tuple = (40, 40)
         
         if self.game_grid[row_index, column_index] == 0:
-            image = Image.open('images/queen.bmp')
+            image_path = 'images/queen.bmp'
         elif self.game_grid[row_index, column_index] == 1:
-            image = Image.open('images/player_right.bmp')
+            image_path = 'images/player_right.bmp'
         elif self.game_grid[row_index, column_index] == 2:
-            image = Image.open('images/enemy_left.bmp')
+            image_path = 'images/enemy_left.bmp'
         elif self.game_grid[row_index, column_index] == 3:
-            image = Image.open('images/wall.bmp')
+            image_path = 'images/wall.bmp'
         elif self.game_grid[row_index, column_index] == 4:
-            image = Image.open('images/brick.bmp')
+            image_path = 'images/brick.bmp'
         else:
-            image = Image.open('images/road.bmp')
+            image_path = 'images/road.bmp'
 
-        assert image is not None
-        image = ImageTk.PhotoImage(image.resize(resize_tuple))
-        lbl.config(image=image)
-        lbl.image = image
-        #btn.grid(row = row_index, column = column_index)
-
-    def say_hi(self):
-        root= Toplevel()
-        root.title("Hi")
-        root.geometry("450x450")
-        Button(root, text= "Salir", command= root.destroy).pack()
-        root.mainloop()
-
+        assert image_path is not None
+        
+        with Image.open(image_path) as cell_image:
+            image = ImageTk.PhotoImage(cell_image.resize(resize_tuple))
+            lbl.config(image=image)
+            lbl.image = image
 
 

@@ -8,6 +8,15 @@ problem.experiments(100, 20, 0.005, 100)
 gameUI = BattleTankUI(problem.rows_number, problem.columns_number, problem.game_grid)
 gameUI.deiconify()
 
+from BattleTankProblem import *
+from BattleTankUI import *
+from BattleTankController import *
+initial = np.asarray([9,1])
+problem = BattleTank(initial)
+gameUI = BattleTankUI(problem.rows_number, problem.columns_number, problem.game_grid)
+controller = BattleTankController(problem, gameUI)
+controller.show()
+
 
 conda install ipykernel
 python -m ipykernel install --user --name python3 --display-name "Python 3"
