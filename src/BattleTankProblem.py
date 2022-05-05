@@ -13,6 +13,7 @@ class BattleTank(Problem):
         self.__UP = 'UP'
         self.__RIGHT = 'RIGHT'
         self.__DOWN = 'DOWN'
+        #self.__ACTIONS_SHOOT = 'SHOOT'
 
         # Characters in board
         self.__QUEEN = 'QUEEN'
@@ -21,6 +22,7 @@ class BattleTank(Problem):
         self.__WALL = 'WALL'
         self.__BRICK = 'BRICK'
         self.__ROAD = 'ROAD'
+        #self.__SHOOT = 'SHOOT'
 
         self.game_actions = game_actions
         if self.game_actions is None:
@@ -29,6 +31,7 @@ class BattleTank(Problem):
             self.game_actions[self.__UP] = (-1, 0)
             self.game_actions[self.__RIGHT] = (0, 1)
             self.game_actions[self.__DOWN] = (1, 0)
+            #self.game_actions[self.__ACTIONS_SHOOT] = (0, 0)
 
         self.game_representation = game_representation
         if self.game_representation is None:
@@ -40,6 +43,7 @@ class BattleTank(Problem):
             self.game_representation[self.__WALL] = 3
             self.game_representation[self.__BRICK] = 4
             self.game_representation[self.__ROAD] = 5
+            #self.game_representation[self.__SHOOT] = 6
             
             self.game_representation_description = {}
             self.game_representation_description[self.game_representation[self.__QUEEN]] = self.__QUEEN
@@ -48,12 +52,14 @@ class BattleTank(Problem):
             self.game_representation_description[self.game_representation[self.__WALL]] = self.__WALL
             self.game_representation_description[self.game_representation[self.__BRICK]] = self.__BRICK
             self.game_representation_description[self.game_representation[self.__ROAD]] = self.__ROAD
+            #self.game_representation_description[self.game_representation[self.__SHOOT]] = self.__SHOOT
 
         self.game_action_states = {}
         self.game_action_states[self.__LEFT] = [self.game_representation[self.__ENEMY], self.game_representation[self.__ROAD]]
         self.game_action_states[self.__UP] = [self.game_representation[self.__ENEMY], self.game_representation[self.__ROAD]]
         self.game_action_states[self.__RIGHT] = [self.game_representation[self.__ENEMY], self.game_representation[self.__ROAD]]
         self.game_action_states[self.__DOWN] = [self.game_representation[self.__ENEMY], self.game_representation[self.__ROAD]]
+        #self.game_action_states[self.__SHOOT] = [self.game_representation[self.__PLAYER]]
 
         self.queen_position = (9,5)
         self.initial_player_position = (9,1)
@@ -254,5 +260,3 @@ class BattleTank(Problem):
         return action
 
     # END PUBLIC METHODS (NON PROBLEM CLASS)
-
-    

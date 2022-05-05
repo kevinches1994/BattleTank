@@ -94,5 +94,5 @@ class BattleTankController():
             self.__view.update_image_cell(game_grid, row_index, col_index, action)
 
             current_player_position = tuple(next_player_position)
-            time.sleep(1)
+            time.sleep(0.5)
         
