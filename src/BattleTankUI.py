@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import Label #, PhotoImage
+from tkinter.messagebox import askyesno
 from PIL import ImageTk ,Image
 
 class BattleTankUI(tkinter.Tk):
@@ -27,7 +28,7 @@ class BattleTankUI(tkinter.Tk):
 
         # llama a la funcion que crea los botones
 
-        self.create_logical_button_grid(game_grid)
+        self.__create_logical_button_grid(game_grid)
         
         menubar = tkinter.Menu(self)
 
@@ -44,26 +45,34 @@ class BattleTankUI(tkinter.Tk):
 
     def __play_with_simulated_annealing(self):
         print("Playing with using simulated annealing")
+        self.__controller.play_simulated_annealing()
+        answer = askyesno(title='Confirmación',
+                    message='¿Esta seguro que desea jugar?')
+        if answer:
+            self.__controller.confirm_play()
 
     def set_controller(self, controller):
-        self.controller = controller
+        self.__controller = controller
 
     def __restart(self):
-        self.controller.restart()
-        self.create_logical_button_grid(self.controller.get_game_grid())
+        answer = askyesno(title='Confirmación',
+                    message='¿Esta seguro que desea reiniciar?')
+        if answer:
+            self.__controller.restart()
+            self.__create_logical_button_grid(self.__controller.get_game_grid())
 
-    def create_logical_button_grid(self, game_grid):
+    def __create_logical_button_grid(self, game_grid):
         self.game_ui_grid = []
         for row_index in range(self.cols_number):
             row_label = []
             for col_index in range(self.cols_number):
                 lbl = Label(self.mainFrame, borderwidth=0)
-                self.put_image_label(lbl, game_grid, row_index, col_index)
+                self.__put_image_label(lbl, game_grid, row_index, col_index)
                 row_label.append(lbl)
                 lbl.grid(row = row_index, column = col_index)
             self.game_ui_grid.append(row_label)
 
-    def put_image_label(self, lbl, game_grid, row_index, column_index, action=None):
+    def __put_image_label(self, lbl, game_grid, row_index, column_index, action=None):
 
         image_path = None
         resize_tuple = (40, 40)
@@ -71,7 +80,9 @@ class BattleTankUI(tkinter.Tk):
         if game_grid[row_index, column_index] == 0:
             image_path = 'images/queen.bmp'
         elif game_grid[row_index, column_index] == 1:
-            image_path = 'images/player_right.bmp'
+            if action is None:
+                action = 'RIGHT'    
+            image_path = 'images/player_{}.bmp'.format(action.lower())
         elif game_grid[row_index, column_index] == 2:
             if action is None:
                 action = 'LEFT'
@@ -89,5 +100,9 @@ class BattleTankUI(tkinter.Tk):
             image = ImageTk.PhotoImage(cell_image.resize(resize_tuple))
             lbl.config(image=image)
             lbl.image = image
+
+    def update_image_cell(self, game_grid, row_index, col_index, action = None):
+        lbl = self.game_ui_grid[row_index][col_index]
+        self.__put_image_label(lbl, game_grid, row_index, col_index, action)
 
 
