@@ -61,29 +61,31 @@ class BattleTank(Problem):
         self.game_action_states[self.__DOWN] = [self.game_representation[self.__ENEMY], self.game_representation[self.__ROAD]]
         #self.game_action_states[self.__SHOOT] = [self.game_representation[self.__PLAYER]]
 
-        self.queen_position = (9,5)
-        self.initial_player_position = (9,1)
-        self.initial_enemy_position = (1,9)
-
-        self.enemies_position = {
-            'ENEMY_1': self.initial_enemy_position
-        }
-
-        self.players_position = {
-            'PLAYER_1': self.initial_player_position
-        }
-
         # Grid initialization
         self.game_grid = game_grid
         if self.game_grid is None:
-            self.rows_number = 11
-            self.columns_number = 11
+
+            self.rows_number = 13
+            self.columns_number = 13
+
+            self.queen_position = (self.rows_number - 1, self.columns_number // 2)
+            self.initial_player_position = (self.rows_number - 1, 0)
+            self.initial_enemy_position = (0, self.columns_number - 1)
+
+            self.enemies_position = {
+                'ENEMY_1': self.initial_enemy_position
+            }
+
+            self.players_position = {
+                'PLAYER_1': self.initial_player_position
+            }
+
             self.resetGrid()
         
         self.rows_number = len(self.game_grid)
-        assert self.rows_number > 0
+        assert self.rows_number > 10 and self.rows_number % 2 != 0
         self.columns_number = len(self.game_grid[0])
-        assert self.columns_number > 0
+        assert self.columns_number > 10 and self.columns_number % 2 != 0
     
     def actions(self, state):
         # state is defined as the position in the grid where the player is currently positioned
@@ -165,11 +167,11 @@ class BattleTank(Problem):
         self.game_grid[self.initial_player_position] = self.game_representation[self.__PLAYER]
         self.game_grid[self.queen_position] = self.game_representation[self.__QUEEN]
         
-        self.game_grid[9,4] = self.game_representation[self.__BRICK]
-        self.game_grid[9,6] = self.game_representation[self.__BRICK]
-        self.game_grid[8,4] = self.game_representation[self.__BRICK]
-        self.game_grid[8,5] = self.game_representation[self.__BRICK]
-        self.game_grid[8,6] = self.game_representation[self.__BRICK]
+        self.game_grid[self.rows_number - 1, (self.columns_number // 2) - 1] = self.game_representation[self.__BRICK]
+        self.game_grid[self.rows_number - 1, (self.columns_number // 2) + 1] = self.game_representation[self.__BRICK]
+        self.game_grid[self.rows_number - 2, (self.columns_number // 2) - 1] = self.game_representation[self.__BRICK]
+        self.game_grid[self.rows_number - 2, self.columns_number // 2] = self.game_representation[self.__BRICK]
+        self.game_grid[self.rows_number - 2, (self.columns_number // 2) + 1] = self.game_representation[self.__BRICK]
 
     def __get_action(self, new_state, previous_state):
         
@@ -184,30 +186,19 @@ class BattleTank(Problem):
     # PUBLIC METHODS (NON PROBLEM CLASS)
 
     def resetGrid(self):
-        self.game_grid = np.asarray(
-            [
-                [self.game_representation[self.__WALL]] * self.columns_number,
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] + [self.game_representation[self.__ROAD]] * (self.columns_number - 2) + [self.game_representation[self.__WALL]],
-                [self.game_representation[self.__WALL]] * self.columns_number,
-            ]
-        )
-
+        
+        self.game_grid = np.full((self.rows_number, self.columns_number), self.game_representation[self.__ROAD], dtype=np.int8)
+        
         self.enemies_position['ENEMY_1'] = self.initial_enemy_position
         self.players_position['PLAYER_1'] = self.initial_player_position
 
         self.__setPositions()
 
     def update_enemy_position(self, enemy, action):
+
         enemy_state = np.asarray(self.enemies_position[enemy])
         if self.__isValidMove(enemy_state, action):
+            
             # Perform update in the game grid
             self.game_grid[tuple(enemy_state)] = self.game_representation[self.__ROAD]
             enemy_state = tuple(enemy_state + np.asarray(self.game_actions[action]))

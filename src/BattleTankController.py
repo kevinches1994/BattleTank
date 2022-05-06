@@ -55,6 +55,7 @@ class BattleTankController():
 
     def restart(self):
         self.__model.resetGrid()
+        self.__view.dashboard.update_moves_count("")
 
     def get_game_grid(self):
         return self.__model.game_grid[:]
@@ -68,6 +69,7 @@ class BattleTankController():
         print(self.__solution)
 
     def confirm_play(self):
+        
         t1=Thread(target=self.__run_simulation)
         t1.start()
 
@@ -77,6 +79,9 @@ class BattleTankController():
         current_player_position = self.__model.players_position["PLAYER_1"]
 
         # Here we do perform the updates in the UI according to the results of the algoritm
+        index = 1
+        total = len(self.__solution)
+
         for next_player_position in self.__solution:
 
             # Get the corresponding action for the state change
@@ -94,5 +99,10 @@ class BattleTankController():
             self.__view.update_image_cell(game_grid, row_index, col_index, action)
 
             current_player_position = tuple(next_player_position)
+
+            # Do update the dashboard in the UI
+            self.__view.dashboard.update_moves_count(index, total)
+            index = index + 1
+
             time.sleep(0.5)
         
