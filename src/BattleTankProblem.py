@@ -5,7 +5,7 @@ from search import simulated_annealing_full, exp_schedule, Problem
 import numpy as np
 
 class BattleTank(Problem):
-    def __init__(self, initial, game_grid = None, game_actions = None, game_representation = None):
+    def __init__(self, initial, rows_number, columns_number, game_grid = None, game_actions = None, game_representation = None):
         super().__init__(initial)
 
         # Actions
@@ -62,14 +62,16 @@ class BattleTank(Problem):
         #self.game_action_states[self.__SHOOT] = [self.game_representation[self.__PLAYER]]
 
         # Grid initialization
+        self.rows_number = rows_number
+        assert self.rows_number > 10 and self.rows_number % 2 != 0
+        self.columns_number = columns_number
+        assert self.columns_number > 10 and self.columns_number % 2 != 0
+
         self.game_grid = game_grid
         if self.game_grid is None:
 
-            self.rows_number = 13
-            self.columns_number = 13
-
             self.queen_position = (self.rows_number - 1, self.columns_number // 2)
-            self.initial_player_position = (self.rows_number - 1, 0)
+            self.initial_player_position = tuple(initial)
             self.initial_enemy_position = (0, self.columns_number - 1)
 
             self.enemies_position = {
@@ -81,11 +83,6 @@ class BattleTank(Problem):
             }
 
             self.resetGrid()
-        
-        self.rows_number = len(self.game_grid)
-        assert self.rows_number > 10 and self.rows_number % 2 != 0
-        self.columns_number = len(self.game_grid[0])
-        assert self.columns_number > 10 and self.columns_number % 2 != 0
     
     def actions(self, state):
         # state is defined as the position in the grid where the player is currently positioned

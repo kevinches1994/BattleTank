@@ -55,7 +55,7 @@ class BattleTankController():
 
     def restart(self):
         self.__model.resetGrid()
-        self.__view.dashboard.update_moves_count("")
+        self.__view.dashboard.update_moves_count("-", "-")
 
     def get_game_grid(self):
         return self.__model.game_grid[:]

@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # board is a square matrix
     assert rows == cols
 
-    problem = BattleTank(initial)
+    problem = BattleTank(initial, rows, cols)
     gameUI = BattleTankUI(problem.rows_number, problem.columns_number, problem.game_grid)
     controller = BattleTankController(problem, gameUI)
     gameUI.set_controller(controller)
