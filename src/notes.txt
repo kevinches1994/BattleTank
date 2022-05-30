@@ -21,3 +21,5 @@ gameUI.mainloop()
 
 conda install ipykernel
 python -m ipykernel install --user --name python3 --display-name "Python 3"
+
+https://stackoverflow.com/questions/28518072/play-animations-in-gif-with-tkinter
